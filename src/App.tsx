@@ -483,10 +483,10 @@ export default function App() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
           >
-            <div className="hero-badge">✨ PHASE 1.1 - POWERED BY AI</div>
+            <div className="hero-badge">✨ PHASE 1.1 + PHASE 2 - NOW LIVE!</div>
             <h1>Universal File Converter</h1>
             <p className="hero-subtitle">
-              Lightning-fast file transformations across 14+ formats. Upload once, convert anywhere, download instantly.
+              Lightning-fast file transformations across 14+ formats + advanced tools. Upload once, convert anywhere, download instantly.
             </p>
             <div className="hero-metrics">
               <motion.span
@@ -516,6 +516,13 @@ export default function App() {
                 transition={{ duration: 0.5, delay: 0.4 }}
               >
                 🔗 Merge files
+              </motion.span>
+              <motion.span
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.5 }}
+              >
+                📦 Advanced Tools
               </motion.span>
             </div>
             <div className="hero-actions">
@@ -644,6 +651,74 @@ export default function App() {
                 <li>Rate limiting protection</li>
                 <li>Secure processing</li>
                 <li>Global CDN delivery</li>
+              </ul>
+            </motion.section>
+
+            <motion.section
+              className="panel feature-card"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+              viewport={{ once: true }}
+            >
+              <div className="feature-icon">📦</div>
+              <h2>PDF Tools Suite</h2>
+              <p>Advanced PDF manipulation with split, compress, and merge capabilities.</p>
+              <ul className="feature-list">
+                <li>✂️ Split PDF pages</li>
+                <li>🗜️ Compress PDFs</li>
+                <li>📖 Extract page ranges</li>
+              </ul>
+            </motion.section>
+
+            <motion.section
+              className="panel feature-card"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.7 }}
+              viewport={{ once: true }}
+            >
+              <div className="feature-icon">📚</div>
+              <h2>Archive Manager</h2>
+              <p>Create and manage ZIP archives from multiple files with automatic compression.</p>
+              <ul className="feature-list">
+                <li>Create ZIP archives</li>
+                <li>Multi-file selection</li>
+                <li>Automatic compression</li>
+              </ul>
+            </motion.section>
+
+            <motion.section
+              className="panel feature-card"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.8 }}
+              viewport={{ once: true }}
+            >
+              <div className="feature-icon">⚡</div>
+              <h2>Batch Processing</h2>
+              <p>Convert multiple files at once and download them as a single ZIP archive.</p>
+              <ul className="feature-list">
+                <li>Batch file conversion</li>
+                <li>Format selection</li>
+                <li>Auto-packaged output</li>
+              </ul>
+            </motion.section>
+
+            <motion.section
+              className="panel feature-card"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.9 }}
+              viewport={{ once: true }}
+            >
+              <div className="feature-icon">🛠️</div>
+              <h2>Text Utilities</h2>
+              <p>Powerful text manipulation tools including statistics, encoding, and QR code generation.</p>
+              <ul className="feature-list">
+                <li>📊 Text statistics</li>
+                <li>🔐 Base64 encode/decode</li>
+                <li>📱 QR code generator</li>
               </ul>
             </motion.section>
           </main>
@@ -1047,7 +1122,10 @@ export default function App() {
               <ul className="info-list">
                 <li><strong>14+ Format Support:</strong> Convert between images, documents, spreadsheets, and more</li>
                 <li><strong>Instant Preview:</strong> See your files before conversion with our intelligent preview system</li>
-                <li><strong>Batch Processing:</strong> Handle multiple files simultaneously for maximum efficiency</li>
+                <li><strong>PDF Tools:</strong> Split, compress, and manipulate PDF files with precision</li>
+                <li><strong>Archive Management:</strong> Create ZIP archives from multiple files with automatic compression</li>
+                <li><strong>Batch Processing:</strong> Convert multiple files simultaneously and download as ZIP</li>
+                <li><strong>Text Utilities:</strong> Text statistics, Base64 encoding/decoding, and QR code generation</li>
                 <li><strong>No Sign-ups:</strong> Start converting immediately without creating an account</li>
                 <li><strong>Secure Processing:</strong> Your files are processed securely and deleted automatically</li>
               </ul>
@@ -1180,7 +1258,10 @@ export default function App() {
               <li><button className="footer-link" onClick={() => { setView('workspace'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>File Converter</button></li>
               <li><button className="footer-link" onClick={() => { setView('workspace'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>Merge Files</button></li>
               <li><button className="footer-link" onClick={() => { setView('workspace'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>Extract Text (OCR)</button></li>
+              <li><button className="footer-link" onClick={() => { setView('workspace'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>PDF Tools</button></li>
+              <li><button className="footer-link" onClick={() => { setView('workspace'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>Archive Manager</button></li>
               <li><button className="footer-link" onClick={() => { setView('workspace'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>Batch Processing</button></li>
+              <li><button className="footer-link" onClick={() => { setView('workspace'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>Text Utilities</button></li>
             </ul>
           </div>
           <div className="footer-section">
