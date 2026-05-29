@@ -170,6 +170,16 @@ export default function App() {
     void loadSupport();
   }, []);
 
+  // Scroll to top when view changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [view]);
+
+  // Scroll to top on page load/refresh
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const clearAll = (message?: string) => {
     setFile(null);
     setTargetFormat('');
