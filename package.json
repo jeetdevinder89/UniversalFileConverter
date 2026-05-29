@@ -1,0 +1,52 @@
+{
+  "name": "3d",
+  "version": "1.0.0",
+  "description": "Beautiful 3D website starter using React, Vite, and Three.js",
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently \"npm:dev:web\" \"npm:dev:api\"",
+    "dev:web": "vite",
+    "dev:api": "node server/index.js",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "start:api": "node server/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.6.1",
+    "cheerio": "1.0.0-rc.12",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.4.1",
+    "framer-motion": "^12.40.0",
+    "leva": "^0.10.1",
+    "jszip": "^3.10.1",
+    "mammoth": "^1.9.1",
+    "multer": "^1.4.5-lts.1",
+    "pdf-lib": "^1.17.1",
+    "pdf-parse": "^1.1.1",
+    "pdfjs-dist": "^4.7.76",
+    "@napi-rs/canvas": "^0.1.63",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "sharp": "^0.33.5",
+    "tesseract.js": "^5.1.1",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "helmet": "^8.0.0",
+    "three": "^0.184.0",
+    "undici": "^6.21.3",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.16.11",
+    "@types/react": "^19.2.15",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^4.2.1",
+    "concurrently": "^9.2.1",
+    "typescript": "^5.4.5",
+    "vite": "^5.2.14"
+  }
+}

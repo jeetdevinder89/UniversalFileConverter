@@ -1,0 +1,10 @@
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Content-Type: application/json
+Content-Disposition: attachment; filename="sample.json"
+Content-Length: 59
+ETag: W/"3b-dGXpMNtexX5FlYisldIMeWwOXNk"
+Date: Tue, 26 May 2026 12:36:59 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+
