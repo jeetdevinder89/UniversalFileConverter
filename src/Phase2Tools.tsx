@@ -297,19 +297,21 @@ export default function Phase2Tools() {
           <div className="phase2-panel">
             <h3>📄 PDF Tools</h3>
 
-            <label
+            <div
               className="phase2-upload-box"
               onClick={() => pdfInputRef.current?.click()}
+              style={{ cursor: 'pointer' }}
             >
               <span>
                 📁 {pdfFile ? pdfFile.name : 'Click to upload PDF'}
               </span>
-            </label>
+            </div>
             <input
               ref={pdfInputRef}
               type="file"
               accept=".pdf"
               onChange={(e) => setPdfFile(e.target.files?.[0] || null)}
+              style={{ display: 'none' }}
             />
 
             {pdfFile && (
@@ -370,20 +372,21 @@ export default function Phase2Tools() {
           <div className="phase2-panel">
             <h3>📦 Create ZIP Archive</h3>
 
-            <label
+            <div
               className="phase2-upload-box"
               onClick={() => archiveInputRef.current?.click()}
-              style={{ textAlign: 'center', paddingTop: '2rem', paddingBottom: '2rem' }}
+              style={{ textAlign: 'center', paddingTop: '2rem', paddingBottom: '2rem', cursor: 'pointer' }}
             >
               <span>
                 📁 {archiveFiles.length > 0 ? `${archiveFiles.length} files selected` : 'Click to select files'}
               </span>
-            </label>
+            </div>
             <input
               ref={archiveInputRef}
               type="file"
               multiple
               onChange={(e) => setArchiveFiles(Array.from(e.target.files || []))}
+              style={{ display: 'none' }}
             />
 
             {archiveFiles.length > 0 && (
@@ -418,20 +421,21 @@ export default function Phase2Tools() {
           <div className="phase2-panel">
             <h3>⚡ Batch Convert Files</h3>
 
-            <label
+            <div
               className="phase2-upload-box"
               onClick={() => batchInputRef.current?.click()}
-              style={{ textAlign: 'center', paddingTop: '2rem', paddingBottom: '2rem' }}
+              style={{ textAlign: 'center', paddingTop: '2rem', paddingBottom: '2rem', cursor: 'pointer' }}
             >
               <span>
                 📁 {batchFiles.length > 0 ? `${batchFiles.length} files selected` : 'Click to select files'}
               </span>
-            </label>
+            </div>
             <input
               ref={batchInputRef}
               type="file"
               multiple
               onChange={(e) => setBatchFiles(Array.from(e.target.files || []))}
+              style={{ display: 'none' }}
             />
 
             {batchFiles.length > 0 && (
