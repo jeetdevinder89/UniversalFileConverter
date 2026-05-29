@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
+import './Phase2Tools.css';
 
 type Phase2Tab = 'pdf-tools' | 'archive' | 'batch' | 'utils';
 
@@ -237,41 +238,41 @@ export default function Phase2Tools() {
     }
   };
 
-  const tabClass = 'px-4 py-2 rounded-lg font-medium transition-all duration-300';
-  const activeTabClass = 'bg-gradient-to-r from-cyan-500 to-purple-600 text-white shadow-lg';
-  const inactiveTabClass = 'bg-gray-800/50 text-gray-300 hover:bg-gray-700/50 border border-gray-700';
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="w-full max-w-6xl mx-auto px-4"
+      className="phase2-container"
     >
       {/* Phase 2 Tab Navigation */}
-      <div className="flex flex-wrap gap-2 mb-8">
+      <div className="phase2-tabs">
         <button
           onClick={() => setActiveTab('pdf-tools')}
-          className={`${tabClass} ${activeTab === 'pdf-tools' ? activeTabClass : inactiveTabClass}`}
+          className={`phase2-tab-btn ${activeTab === 'pdf-tools' ? 'active' : ''}`}
         >
-          📄 PDF Tools
+          <span>📄</span>
+          <span>PDF Tools</span>
         </button>
         <button
           onClick={() => setActiveTab('archive')}
-          className={`${tabClass} ${activeTab === 'archive' ? activeTabClass : inactiveTabClass}`}
+          className={`phase2-tab-btn ${activeTab === 'archive' ? 'active' : ''}`}
         >
-          📦 Archive
+          <span>📦</span>
+          <span>Archive</span>
         </button>
         <button
           onClick={() => setActiveTab('batch')}
-          className={`${tabClass} ${activeTab === 'batch' ? activeTabClass : inactiveTabClass}`}
+          className={`phase2-tab-btn ${activeTab === 'batch' ? 'active' : ''}`}
         >
-          ⚡ Batch Convert
+          <span>⚡</span>
+          <span>Batch Convert</span>
         </button>
         <button
           onClick={() => setActiveTab('utils')}
-          className={`${tabClass} ${activeTab === 'utils' ? activeTabClass : inactiveTabClass}`}
+          className={`phase2-tab-btn ${activeTab === 'utils' ? 'active' : ''}`}
         >
-          🛠️ Text Tools
+          <span>🛠️</span>
+          <span>Text Tools</span>
         </button>
       </div>
 
@@ -280,7 +281,7 @@ export default function Phase2Tools() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="mb-4 p-3 bg-green-500/20 border border-green-500/50 rounded-lg text-green-300 text-center"
+          className="phase2-success"
         >
           {successMsg}
         </motion.div>
@@ -291,71 +292,65 @@ export default function Phase2Tools() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="space-y-6"
+          className="phase2-content"
         >
-          <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6 border border-gray-700">
-            <h3 className="text-2xl font-bold mb-4 text-cyan-400">🔧 PDF Tools</h3>
+          <div className="phase2-panel">
+            <h3>📄 PDF Tools</h3>
 
-            {/* PDF Upload */}
-            <div className="mb-6">
-              <label
-                className="block px-4 py-3 bg-gray-800/50 border-2 border-dashed border-cyan-500/30 rounded-lg cursor-pointer hover:bg-gray-700/50 transition-all"
-                onClick={() => pdfInputRef.current?.click()}
-              >
-                <span className="text-cyan-400 font-medium">
-                  📁 {pdfFile ? pdfFile.name : 'Click to upload PDF'}
-                </span>
-              </label>
-              <input
-                ref={pdfInputRef}
-                type="file"
-                accept=".pdf"
-                onChange={(e) => setPdfFile(e.target.files?.[0] || null)}
-                className="hidden"
-              />
-            </div>
+            <label
+              className="phase2-upload-box"
+              onClick={() => pdfInputRef.current?.click()}
+            >
+              <span>
+                📁 {pdfFile ? pdfFile.name : 'Click to upload PDF'}
+              </span>
+            </label>
+            <input
+              ref={pdfInputRef}
+              type="file"
+              accept=".pdf"
+              onChange={(e) => setPdfFile(e.target.files?.[0] || null)}
+            />
 
             {pdfFile && (
               <>
-                {/* Split PDF */}
-                <div className="mb-6 p-4 bg-gray-800/30 rounded-lg border border-gray-700">
-                  <h4 className="font-bold mb-3 text-purple-300">✂️ Split PDF Pages</h4>
-                  <div className="grid grid-cols-2 gap-3 mb-3">
+                <div className="phase2-input-group">
+                  <h4 style={{ fontSize: '1.1rem', marginBottom: '1rem', color: 'rgba(255, 255, 255, 0.9)' }}>✂️ Split PDF Pages</h4>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
                     <div>
-                      <label className="text-sm text-gray-400 block mb-1">Start Page</label>
+                      <label>Start Page</label>
                       <input
                         type="number"
                         min="1"
                         value={pdfStartPage}
                         onChange={(e) => setPdfStartPage(Number(e.target.value))}
-                        className="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 text-white focus:outline-none focus:border-cyan-500"
+                        className="phase2-input"
                       />
                     </div>
                     <div>
-                      <label className="text-sm text-gray-400 block mb-1">End Page</label>
+                      <label>End Page</label>
                       <input
                         type="number"
                         min="1"
                         value={pdfEndPage}
                         onChange={(e) => setPdfEndPage(Number(e.target.value))}
-                        className="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 text-white focus:outline-none focus:border-cyan-500"
+                        className="phase2-input"
                       />
                     </div>
                   </div>
                   <button
                     onClick={handlePdfSplit}
                     disabled={isLoading}
-                    className="w-full bg-gradient-to-r from-purple-600 to-cyan-500 hover:from-purple-700 hover:to-cyan-600 disabled:opacity-50 px-4 py-2 rounded-lg font-bold text-white transition-all"
+                    className="phase2-button"
                   >
                     {isLoading ? '⏳ Processing...' : '✂️ Extract Pages'}
                   </button>
                 </div>
 
-                {/* Compress PDF */}
                 <button
                   onClick={handlePdfCompress}
                   disabled={isLoading}
-                  className="w-full bg-gradient-to-r from-cyan-600 to-purple-500 hover:from-cyan-700 hover:to-purple-600 disabled:opacity-50 px-4 py-3 rounded-lg font-bold text-white transition-all"
+                  className="phase2-button phase2-button-secondary"
                 >
                   {isLoading ? '⏳ Compressing...' : '🗜️ Compress PDF'}
                 </button>
@@ -370,36 +365,32 @@ export default function Phase2Tools() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="space-y-6"
+          className="phase2-content"
         >
-          <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6 border border-gray-700">
-            <h3 className="text-2xl font-bold mb-4 text-green-400">📦 Create ZIP Archive</h3>
+          <div className="phase2-panel">
+            <h3>📦 Create ZIP Archive</h3>
 
-            {/* Files Upload */}
-            <div className="mb-6">
-              <label
-                className="block px-4 py-6 bg-gray-800/50 border-2 border-dashed border-green-500/30 rounded-lg cursor-pointer hover:bg-gray-700/50 transition-all text-center"
-                onClick={() => archiveInputRef.current?.click()}
-              >
-                <span className="text-green-400 font-medium">
-                  📁 {archiveFiles.length > 0 ? `${archiveFiles.length} files selected` : 'Click to select files'}
-                </span>
-              </label>
-              <input
-                ref={archiveInputRef}
-                type="file"
-                multiple
-                onChange={(e) => setArchiveFiles(Array.from(e.target.files || []))}
-                className="hidden"
-              />
-            </div>
+            <label
+              className="phase2-upload-box"
+              onClick={() => archiveInputRef.current?.click()}
+              style={{ textAlign: 'center', paddingTop: '2rem', paddingBottom: '2rem' }}
+            >
+              <span>
+                📁 {archiveFiles.length > 0 ? `${archiveFiles.length} files selected` : 'Click to select files'}
+              </span>
+            </label>
+            <input
+              ref={archiveInputRef}
+              type="file"
+              multiple
+              onChange={(e) => setArchiveFiles(Array.from(e.target.files || []))}
+            />
 
             {archiveFiles.length > 0 && (
               <>
-                <div className="mb-4 max-h-40 overflow-y-auto">
-                  <div className="text-sm text-gray-400 mb-2">Selected files:</div>
+                <div className="phase2-file-list">
                   {archiveFiles.map((file, i) => (
-                    <div key={i} className="text-xs text-gray-500 py-1">
+                    <div key={i} className="phase2-file-item">
                       • {file.name}
                     </div>
                   ))}
@@ -407,7 +398,7 @@ export default function Phase2Tools() {
                 <button
                   onClick={handleCreateZip}
                   disabled={isLoading}
-                  className="w-full bg-gradient-to-r from-green-600 to-emerald-500 hover:from-green-700 hover:to-emerald-600 disabled:opacity-50 px-4 py-3 rounded-lg font-bold text-white transition-all"
+                  className="phase2-button"
                 >
                   {isLoading ? '⏳ Creating ZIP...' : '📦 Create ZIP Archive'}
                 </button>
@@ -422,38 +413,35 @@ export default function Phase2Tools() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="space-y-6"
+          className="phase2-content"
         >
-          <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6 border border-gray-700">
-            <h3 className="text-2xl font-bold mb-4 text-yellow-400">⚡ Batch Convert Files</h3>
+          <div className="phase2-panel">
+            <h3>⚡ Batch Convert Files</h3>
 
-            {/* Files Upload */}
-            <div className="mb-6">
-              <label
-                className="block px-4 py-6 bg-gray-800/50 border-2 border-dashed border-yellow-500/30 rounded-lg cursor-pointer hover:bg-gray-700/50 transition-all text-center"
-                onClick={() => batchInputRef.current?.click()}
-              >
-                <span className="text-yellow-400 font-medium">
-                  📁 {batchFiles.length > 0 ? `${batchFiles.length} files selected` : 'Click to select files'}
-                </span>
-              </label>
-              <input
-                ref={batchInputRef}
-                type="file"
-                multiple
-                onChange={(e) => setBatchFiles(Array.from(e.target.files || []))}
-                className="hidden"
-              />
-            </div>
+            <label
+              className="phase2-upload-box"
+              onClick={() => batchInputRef.current?.click()}
+              style={{ textAlign: 'center', paddingTop: '2rem', paddingBottom: '2rem' }}
+            >
+              <span>
+                📁 {batchFiles.length > 0 ? `${batchFiles.length} files selected` : 'Click to select files'}
+              </span>
+            </label>
+            <input
+              ref={batchInputRef}
+              type="file"
+              multiple
+              onChange={(e) => setBatchFiles(Array.from(e.target.files || []))}
+            />
 
             {batchFiles.length > 0 && (
               <>
-                <div className="mb-4">
-                  <label className="text-sm text-gray-400 block mb-2">Target Format</label>
+                <div className="phase2-input-group">
+                  <label>Target Format</label>
                   <select
                     value={batchFormat}
                     onChange={(e) => setBatchFormat(e.target.value)}
-                    className="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 text-white focus:outline-none focus:border-cyan-500"
+                    className="phase2-select"
                   >
                     <option value="">Select format...</option>
                     <option value="pdf">PDF</option>
@@ -462,21 +450,22 @@ export default function Phase2Tools() {
                     <option value="png">PNG</option>
                   </select>
                 </div>
-                <div className="mb-4 max-h-32 overflow-y-auto">
-                  <div className="text-sm text-gray-400 mb-2">Files: ({batchFiles.length})</div>
+                <div className="phase2-file-list">
                   {batchFiles.slice(0, 5).map((file, i) => (
-                    <div key={i} className="text-xs text-gray-500 py-1">
+                    <div key={i} className="phase2-file-item">
                       • {file.name}
                     </div>
                   ))}
                   {batchFiles.length > 5 && (
-                    <div className="text-xs text-gray-600">+ {batchFiles.length - 5} more...</div>
+                    <div className="phase2-file-item" style={{ color: 'rgba(255, 255, 255, 0.4)' }}>
+                      + {batchFiles.length - 5} more...
+                    </div>
                   )}
                 </div>
                 <button
                   onClick={handleBatchConvert}
                   disabled={isLoading}
-                  className="w-full bg-gradient-to-r from-yellow-600 to-orange-500 hover:from-yellow-700 hover:to-orange-600 disabled:opacity-50 px-4 py-3 rounded-lg font-bold text-white transition-all"
+                  className="phase2-button"
                 >
                   {isLoading ? '⏳ Converting...' : '⚡ Convert All Files'}
                 </button>
@@ -491,56 +480,48 @@ export default function Phase2Tools() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="space-y-6"
+          className="phase2-content"
         >
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="phase2-grid">
             {/* Text Stats */}
-            <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6 border border-gray-700">
-              <h4 className="text-xl font-bold mb-4 text-blue-400">📊 Text Statistics</h4>
+            <div className="phase2-panel">
+              <h4>📊 Text Statistics</h4>
               <textarea
                 value={textInput}
                 onChange={(e) => setTextInput(e.target.value)}
                 placeholder="Enter text here..."
-                className="w-full h-32 bg-gray-900 border border-gray-600 rounded px-3 py-2 text-white mb-3 resize-none focus:outline-none focus:border-cyan-500"
+                className="phase2-textarea"
               />
               <button
                 onClick={handleTextStats}
                 disabled={isLoading}
-                className="w-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 disabled:opacity-50 px-4 py-2 rounded-lg font-bold text-white transition-all"
+                className="phase2-button"
               >
                 {isLoading ? '⏳ Analyzing...' : '📊 Analyze'}
               </button>
               {textStats && (
-                <div className="mt-3 space-y-1 text-sm text-gray-300">
-                  <div>📝 Characters: <span className="text-cyan-400 font-bold">{textStats.characters}</span></div>
-                  <div>📝 Words: <span className="text-cyan-400 font-bold">{textStats.words}</span></div>
-                  <div>📝 Lines: <span className="text-cyan-400 font-bold">{textStats.lines}</span></div>
-                  <div>📝 Avg Word Length: <span className="text-cyan-400 font-bold">{textStats.averageWordLength}</span></div>
+                <div className="phase2-info-box">
+                  <div>📝 Characters: <strong style={{ color: '#06d6d0' }}>{textStats.characters}</strong></div>
+                  <div>📝 Words: <strong style={{ color: '#06d6d0' }}>{textStats.words}</strong></div>
+                  <div>📝 Lines: <strong style={{ color: '#06d6d0' }}>{textStats.lines}</strong></div>
+                  <div>📝 Avg Word Length: <strong style={{ color: '#06d6d0' }}>{textStats.averageWordLength}</strong></div>
                 </div>
               )}
             </div>
 
             {/* Base64 Transform */}
-            <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6 border border-gray-700">
-              <h4 className="text-xl font-bold mb-4 text-orange-400">🔐 Base64</h4>
-              <div className="mb-3 flex gap-2">
+            <div className="phase2-panel">
+              <h4>🔐 Base64</h4>
+              <div className="phase2-button-mode-selector">
                 <button
                   onClick={() => setBase64Mode('encode')}
-                  className={`flex-1 px-3 py-1 rounded text-sm font-medium transition-all ${
-                    base64Mode === 'encode'
-                      ? 'bg-orange-600 text-white'
-                      : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                  }`}
+                  className={`phase2-button-mode ${base64Mode === 'encode' ? 'active' : ''}`}
                 >
                   Encode
                 </button>
                 <button
                   onClick={() => setBase64Mode('decode')}
-                  className={`flex-1 px-3 py-1 rounded text-sm font-medium transition-all ${
-                    base64Mode === 'decode'
-                      ? 'bg-orange-600 text-white'
-                      : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                  }`}
+                  className={`phase2-button-mode ${base64Mode === 'decode' ? 'active' : ''}`}
                 >
                   Decode
                 </button>
@@ -549,40 +530,43 @@ export default function Phase2Tools() {
                 value={base64Input}
                 onChange={(e) => setBase64Input(e.target.value)}
                 placeholder={base64Mode === 'encode' ? 'Text to encode...' : 'Base64 to decode...'}
-                className="w-full h-20 bg-gray-900 border border-gray-600 rounded px-3 py-2 text-white mb-2 resize-none focus:outline-none focus:border-orange-500"
+                className="phase2-textarea"
               />
               {base64Output && (
                 <textarea
                   value={base64Output}
                   readOnly
-                  className="w-full h-20 bg-gray-900 border border-gray-600 rounded px-3 py-2 text-white mb-2 resize-none focus:outline-none"
+                  className="phase2-textarea"
+                  style={{ marginTop: '0.8rem', opacity: 0.9 }}
                 />
               )}
               <button
                 onClick={handleBase64Transform}
                 disabled={isLoading}
-                className="w-full bg-gradient-to-r from-orange-600 to-red-500 hover:from-orange-700 hover:to-red-600 disabled:opacity-50 px-4 py-2 rounded-lg font-bold text-white transition-all text-sm"
+                className="phase2-button"
+                style={{ marginTop: '0.8rem' }}
               >
                 {isLoading ? '⏳ Processing...' : '🔐 ' + (base64Mode === 'encode' ? 'Encode' : 'Decode')}
               </button>
             </div>
 
-            {/* QR Code Generator */}
-            <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-6 border border-gray-700">
-              <h4 className="text-xl font-bold mb-4 text-green-400">📱 QR Code Info</h4>
+            {/* QR Code Info */}
+            <div className="phase2-panel">
+              <h4>📱 QR Code Generator</h4>
               <input
                 type="text"
                 value={qrInput}
                 onChange={(e) => setQrInput(e.target.value)}
                 placeholder="Enter text or URL..."
-                className="w-full bg-gray-900 border border-gray-600 rounded px-3 py-2 text-white mb-3 focus:outline-none focus:border-green-500"
+                className="phase2-input"
               />
               {qrInput && (
-                <div className="bg-gray-900 p-4 rounded text-center">
-                  <div className="text-sm text-gray-400">📱 QR Code Ready</div>
-                  <div className="text-xs text-gray-500 mt-2">Generated QR code for: {qrInput}</div>
-                  <div className="mt-3 p-3 bg-white rounded inline-block">
-                    <div className="text-xs font-mono text-black break-all">{qrInput.substring(0, 30)}{qrInput.length > 30 ? '...' : ''}</div>
+                <div className="phase2-info-box" style={{ marginTop: '1rem', textAlign: 'center' }}>
+                  <div style={{ color: 'rgba(6, 214, 208, 0.9)', fontWeight: 'bold', marginBottom: '0.5rem' }}>
+                    📱 QR Code Ready
+                  </div>
+                  <div style={{ fontSize: '0.85rem', color: 'rgba(255, 255, 255, 0.6)' }}>
+                    For: {qrInput.substring(0, 40)}{qrInput.length > 40 ? '...' : ''}
                   </div>
                 </div>
               )}
