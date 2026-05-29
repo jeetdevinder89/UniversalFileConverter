@@ -64,6 +64,29 @@ Universal File Converter is a **lightning-fast, zero-setup file conversion platf
 - **Batch Operations**: Process multiple files efficiently
 - **Format Preservation**: Maintain quality during merge
 
+### ⚡ **NEW PHASE 2** - Advanced Tools
+
+#### 📄 PDF Tools
+- **Split Pages**: Extract specific pages from PDFs
+- **Compress PDF**: Reduce file size while maintaining quality
+- **Page Range Selection**: Choose which pages to extract
+
+#### 📦 Archive Management
+- **Create ZIP**: Bundle multiple files into compressed archives
+- **Batch File Selection**: Add 50+ files to archive
+- **DEFLATE Compression**: Optimal compression settings
+
+#### ⚡ Batch Conversion
+- **Convert Multiple Files**: Process 20+ files at once
+- **Target Format Selection**: Convert all files to same format
+- **Automatic ZIP Output**: Results delivered in convenient ZIP archive
+
+#### 🛠️ Text Utilities
+- **Text Statistics**: Character, word, line, and paragraph counting
+- **Average Word Length**: Analyze text complexity
+- **Base64 Encode/Decode**: Quick encoding/decoding for text
+- **QR Code Info**: Generate QR codes from text/URLs
+
 ### ⚙️ Built for Scale
 - **Rate Limiting**: Protection against abuse
 - **Enterprise Security**: Secure file processing
@@ -336,8 +359,16 @@ This project is licensed under the **MIT License** - see [LICENSE](LICENSE) file
 
 ## 🚀 Roadmap
 
-- [ ] Phase 2: Video conversion support
-- [ ] Phase 3: Batch processing dashboard
+- [x] **Phase 1.1** - File conversion, PDF preview, image optimization, file merge, OCR
+- [x] **Phase 2** - PDF tools, Archive creation, batch processing, text utilities
+  - [x] PDF Split/Extract pages
+  - [x] PDF Compression
+  - [x] ZIP Archive creation from multiple files
+  - [x] Batch file conversion (convert multiple files at once)
+  - [x] Text Statistics (character, word, line counts)
+  - [x] Base64 Encoding/Decoding
+  - [x] QR Code Information
+- [ ] Phase 3: Video conversion support
 - [ ] Phase 4: Cloud storage integration
 - [ ] Phase 5: API for developers
 - [ ] Phase 6: Desktop application

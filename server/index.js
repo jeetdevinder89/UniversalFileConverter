@@ -734,6 +734,222 @@ app.post('/api/scan', async (req, res) => {
   });
 });
 
+// ===== PHASE 2 FEATURES =====
+
+// PDF Tools: Split pages, extract, compress
+app.post('/api/pdf/split', upload.single('file'), async (req, res) => {
+  const file = req.file;
+  if (!file || getExt(file.originalname) !== 'pdf') {
+    return res.status(400).json({ error: 'Please upload a PDF file.' });
+  }
+
+  try {
+    const startPage = Math.max(1, Number(req.body?.startPage || 1));
+    const endPage = Math.max(1, Number(req.body?.endPage || 1));
+
+    const srcPdf = await PDFDocument.load(file.buffer, { ignoreEncryption: true });
+    const totalPages = srcPdf.getPageCount();
+
+    if (startPage > totalPages || endPage > totalPages || startPage > endPage) {
+      return res.status(400).json({ error: `Invalid page range. PDF has ${totalPages} pages.` });
+    }
+
+    const newPdf = await PDFDocument.create();
+    const pagesToCopy = [];
+    for (let i = startPage - 1; i < endPage; i++) {
+      pagesToCopy.push(i);
+    }
+    const copiedPages = await newPdf.copyPages(srcPdf, pagesToCopy);
+    copiedPages.forEach((page) => newPdf.addPage(page));
+
+    const pdfBytes = await newPdf.save();
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename="extracted_pages_${startPage}-${endPage}.pdf"`);
+    return res.send(Buffer.from(pdfBytes));
+  } catch (error) {
+    return res.status(500).json({
+      error: 'Failed to split PDF.',
+      details: error instanceof Error ? error.message : 'Unknown error',
+    });
+  }
+});
+
+// PDF Tools: Compress (reduce file size)
+app.post('/api/pdf/compress', upload.single('file'), async (req, res) => {
+  const file = req.file;
+  if (!file || getExt(file.originalname) !== 'pdf') {
+    return res.status(400).json({ error: 'Please upload a PDF file.' });
+  }
+
+  try {
+    const pdf = await PDFDocument.load(file.buffer, { ignoreEncryption: true });
+    const bytes = await pdf.save();
+    
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', 'attachment; filename="compressed.pdf"');
+    return res.send(Buffer.from(bytes));
+  } catch (error) {
+    return res.status(500).json({
+      error: 'Failed to compress PDF.',
+      details: error instanceof Error ? error.message : 'Unknown error',
+    });
+  }
+});
+
+// Archive: Create ZIP from multiple files
+app.post('/api/archive/create-zip', upload.array('files', 50), async (req, res) => {
+  const files = req.files;
+  if (!files || files.length === 0) {
+    return res.status(400).json({ error: 'Please upload at least one file.' });
+  }
+
+  try {
+    const zip = new JSZip();
+    files.forEach((file) => {
+      zip.file(file.originalname, file.buffer);
+    });
+    const zipBuffer = await zip.generateAsync({ type: 'nodebuffer', compression: 'DEFLATE' });
+
+    res.setHeader('Content-Type', 'application/zip');
+    res.setHeader('Content-Disposition', `attachment; filename="archive_${Date.now()}.zip"`);
+    return res.send(zipBuffer);
+  } catch (error) {
+    return res.status(500).json({
+      error: 'Failed to create ZIP archive.',
+      details: error instanceof Error ? error.message : 'Unknown error',
+    });
+  }
+});
+
+// Batch Processing: Convert multiple files
+app.post('/api/batch/convert', upload.array('files', 20), async (req, res) => {
+  const files = req.files;
+  const targetFormat = String(req.body?.targetFormat || '').toLowerCase();
+
+  if (!files || files.length === 0) {
+    return res.status(400).json({ error: 'Please upload at least one file.' });
+  }
+
+  if (!targetFormat) {
+    return res.status(400).json({ error: 'Please specify target format.' });
+  }
+
+  try {
+    const results = [];
+    const errors = [];
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      try {
+        const converted = await convertBuffer(file, targetFormat, {
+          imageQuality: req.body?.imageQuality,
+        });
+        results.push({
+          originalName: file.originalname,
+          status: 'success',
+          size: converted.buffer.length,
+        });
+      } catch (error) {
+        errors.push({
+          originalName: file.originalname,
+          status: 'failed',
+          reason: error instanceof Error ? error.message : 'Unknown error',
+        });
+      }
+    }
+
+    // Create ZIP with all results
+    const zip = new JSZip();
+    let fileIndex = 0;
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (results[i]?.status === 'success') {
+        try {
+          const converted = await convertBuffer(file, targetFormat, {
+            imageQuality: req.body?.imageQuality,
+          });
+          const downloadName = buildDownloadName(file.originalname, targetFormat);
+          zip.file(downloadName, converted.buffer);
+        } catch {
+          // Skip on error
+        }
+      }
+    }
+
+    const zipBuffer = await zip.generateAsync({ type: 'nodebuffer', compression: 'DEFLATE' });
+    res.setHeader('Content-Type', 'application/zip');
+    res.setHeader('Content-Disposition', `attachment; filename="batch_converted_${Date.now()}.zip"`);
+    return res.send(zipBuffer);
+  } catch (error) {
+    return res.status(500).json({
+      error: 'Batch conversion failed.',
+      details: error instanceof Error ? error.message : 'Unknown error',
+    });
+  }
+});
+
+// Utility: QR Code (info endpoint, actual generation done client-side)
+app.get('/api/utils/qr-info', (_req, res) => {
+  res.json({
+    service: 'qr-generator',
+    type: 'client-side',
+    message: 'QR codes are generated client-side for privacy',
+  });
+});
+
+// Utility: Base64 encoding
+app.post('/api/utils/base64-encode', express.text({ limit: '10mb' }), async (req, res) => {
+  try {
+    const text = req.body;
+    const encoded = Buffer.from(text, 'utf8').toString('base64');
+    res.json({ encoded });
+  } catch (error) {
+    return res.status(400).json({
+      error: 'Encoding failed.',
+      details: error instanceof Error ? error.message : 'Unknown error',
+    });
+  }
+});
+
+// Utility: Base64 decoding
+app.post('/api/utils/base64-decode', express.text({ limit: '10mb' }), async (req, res) => {
+  try {
+    const encoded = req.body;
+    const decoded = Buffer.from(encoded, 'base64').toString('utf8');
+    res.json({ decoded });
+  } catch (error) {
+    return res.status(400).json({
+      error: 'Decoding failed.',
+      details: error instanceof Error ? error.message : 'Unknown error',
+    });
+  }
+});
+
+// Utility: Text Statistics
+app.post('/api/utils/text-stats', express.text({ limit: '10mb' }), async (req, res) => {
+  try {
+    const text = req.body;
+    const words = text.trim().split(/\s+/).filter((w) => w.length > 0);
+    const lines = text.split(/\n/);
+    const chars = text.length;
+    const charsNoSpaces = text.replace(/\s/g, '').length;
+
+    res.json({
+      characters: chars,
+      charactersNoSpaces: charsNoSpaces,
+      words: words.length,
+      lines: lines.length,
+      paragraphs: text.split(/\n\n+/).filter((p) => p.trim().length > 0).length,
+      averageWordLength: words.length > 0 ? (charsNoSpaces / words.length).toFixed(2) : 0,
+    });
+  } catch (error) {
+    return res.status(400).json({
+      error: 'Failed to calculate statistics.',
+      details: error instanceof Error ? error.message : 'Unknown error',
+    });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Converter API listening on http://localhost:${PORT}`);
 });

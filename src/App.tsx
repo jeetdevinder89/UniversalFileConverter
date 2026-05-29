@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
+import Phase2Tools from './Phase2Tools';
 
 type PreviewPayload = {
   fileName: string;
@@ -113,7 +114,8 @@ export default function App() {
   const [ocrNote, setOcrNote] = useState('');
   const [isRunningOcr, setIsRunningOcr] = useState(false);
 
-  const [activeTab, setActiveTab] = useState<'converter' | 'merge' | 'ocr'>('converter');
+  const [activeTab, setActiveTab] = useState<'phase1' | 'phase2'>('phase1');
+  const [phase1Tab, setPhase1Tab] = useState<'converter' | 'merge' | 'ocr'>('converter');
 
   const ext = useMemo(() => (file ? getExt(file.name) : ''), [file]);
   const isImageConversion = useMemo(
@@ -671,30 +673,49 @@ export default function App() {
           <main className="workspace-container">
             <nav className="tab-nav">
               <button
-                className={`tab-button ${activeTab === 'converter' ? 'active' : ''}`}
-                onClick={() => setActiveTab('converter')}
+                className={`tab-button ${activeTab === 'phase1' ? 'active' : ''}`}
+                onClick={() => setActiveTab('phase1')}
               >
-                <span className="tab-icon">🔄</span>
-                <span className="tab-label">File Converter</span>
+                <span className="tab-icon">⭐</span>
+                <span className="tab-label">Phase 1</span>
               </button>
               <button
-                className={`tab-button ${activeTab === 'merge' ? 'active' : ''}`}
-                onClick={() => setActiveTab('merge')}
+                className={`tab-button ${activeTab === 'phase2' ? 'active' : ''}`}
+                onClick={() => setActiveTab('phase2')}
               >
-                <span className="tab-icon">📎</span>
-                <span className="tab-label">Merge Files</span>
-              </button>
-              <button
-                className={`tab-button ${activeTab === 'ocr' ? 'active' : ''}`}
-                onClick={() => setActiveTab('ocr')}
-              >
-                <span className="tab-icon">📄</span>
-                <span className="tab-label">Extract Text</span>
+                <span className="tab-icon">🚀</span>
+                <span className="tab-label">Phase 2 (New!)</span>
               </button>
             </nav>
 
+            {activeTab === 'phase1' && (
+              <nav className="tab-nav" style={{ marginTop: '1rem' }}>
+                <button
+                  className={`tab-button ${phase1Tab === 'converter' ? 'active' : ''}`}
+                  onClick={() => setPhase1Tab('converter')}
+                >
+                  <span className="tab-icon">🔄</span>
+                  <span className="tab-label">File Converter</span>
+                </button>
+                <button
+                  className={`tab-button ${phase1Tab === 'merge' ? 'active' : ''}`}
+                  onClick={() => setPhase1Tab('merge')}
+                >
+                  <span className="tab-icon">📎</span>
+                  <span className="tab-label">Merge Files</span>
+                </button>
+                <button
+                  className={`tab-button ${phase1Tab === 'ocr' ? 'active' : ''}`}
+                  onClick={() => setPhase1Tab('ocr')}
+                >
+                  <span className="tab-icon">📄</span>
+                  <span className="tab-label">Extract Text</span>
+                </button>
+              </nav>
+            )}
+
             <div className="tab-content">
-              {activeTab === 'converter' && (
+              {activeTab === 'phase1' && phase1Tab === 'converter' && (
                 <div className="grid workspace-grid">
                   <section className="panel">
                     <h2>Upload + Preview</h2>
@@ -917,7 +938,7 @@ export default function App() {
                 </div>
               )}
 
-              {activeTab === 'merge' && (
+              {activeTab === 'phase1' && phase1Tab === 'merge' && (
                 <div className="grid workspace-grid">
                   <section className="panel">
                     <h2>File Merging</h2>
@@ -965,7 +986,7 @@ export default function App() {
                 </div>
               )}
 
-              {activeTab === 'ocr' && (
+              {activeTab === 'phase1' && phase1Tab === 'ocr' && (
                 <div className="grid workspace-grid">
                   <section className="panel">
                     <h2>OCR - Extract Text from Images & Scanned PDFs</h2>
@@ -994,6 +1015,10 @@ export default function App() {
                     ) : null}
                   </section>
                 </div>
+              )}
+
+              {activeTab === 'phase2' && (
+                <Phase2Tools />
               )}
             </div>
           </main>
